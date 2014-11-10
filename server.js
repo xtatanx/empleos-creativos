@@ -14,15 +14,13 @@ mongoose.connect('mongodb://xtatanx:Gonzo009*@linus.mongohq.com:10008/empleos-cr
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-// routes for the API
-router.use(function (req, res, next){
-    // console.log('data', req.params);
-    next();
-});
-router.get('/', function (req, res){
-    res.json({message: 'Hello this is the first try to make an APi with node.js'});
-});
+if(app.get('env') === 'development'){
+    app.use(express.static(__dirname + '/private'));
+}else{
+    app.use(express.static(__dirname + '/public'));
+}
 
+// routes for the API
 router.route('/jobs')
 
     .post(function (req, res){
