@@ -8,19 +8,23 @@ var Job = require('./app/models/jobs');
 var port = process.env.PORT || 3000;
 var router = express.Router();
 var app = express();
+var directory;
 
 mongoose.connect('mongodb://xtatanx:Gonzo009*@linus.mongohq.com:10008/empleos-creativos');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+// path for environments
 if(app.get('env') === 'development'){
     app.use(express.static(__dirname + '/private'));
+    directory = './private/';
 }else{
     app.use(express.static(__dirname + '/public'));
+    directory = './public/';
 }
 
-// routes for the API
+// routes for the API all routes starting with api/
 router.route('/jobs')
 
     .post(function (req, res){
@@ -86,6 +90,11 @@ router.route('/jobs/:job_id')
     });
 
 app.use('/api', router);
+
+// redirect every location to index.html
+app.get('*', function (req, res){
+    res.sendfile(directory + 'index.html');
+});
 
 app.listen(port);
 console.log('app runing in port: ', port);
