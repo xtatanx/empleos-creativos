@@ -65,16 +65,16 @@ router.route('/jobs/:job_id')
             if(err)
                 res.send(err);
 
-            job.title = req.body.title;
-            job.description = req.body.description;
-            job.contactMail = req.body.contactMail;
-            job.salary = req.body.salary;
-            job.dateCreated = req.body.dateCreated;
+            job.title = req.body.title || job.title;
+            job.description = req.body.description || job.description;
+            job.contactMail = req.body.contactMail || job.contactMail;
+            job.salary = req.body.salary || job.salary;
+            job.dateCreated = req.body.dateCreated || job.dateCreated;
             
             job.save(function (err){
                 if(err)
                     res.send(err);
-                res.json({message: 'job title updated'});
+                res.json({message: 'job updated'});
             }); 
         });
     })
